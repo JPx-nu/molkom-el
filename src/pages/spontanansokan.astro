@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+---
+
+<BaseLayout title="Spontanansökan" description="Vill du jobba på Molkom EL? Skicka en spontanansökan med CV.">
+  <Hero title="Jobba hos oss" subtitle="Vi söker alltid duktiga elektriker och montörer." variant="narrow" />
+
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="employer-brand reveal">
+        <h2>Varför Molkom EL?</h2>
+        <p>Sedan 1925 har vi byggt en arbetsplats där säkerhet, kvalitet och kamratskap står i centrum. Vi arbetar med allt från villainstallationer till elkraft upp till 145 kV — det betyder att du får varierande och utvecklande uppdrag.</p>
+      </div>
+
+      <form class="contact-form" id="apply-form" novalidate style="margin-top: var(--space-2xl);">
+        <div class="form-field">
+          <input type="text" id="apply-name" name="name" placeholder=" " required />
+          <label for="apply-name">Namn</label>
+        </div>
+        <div class="form-field">
+          <input type="email" id="apply-email" name="email" placeholder=" " required />
+          <label for="apply-email">E-post</label>
+        </div>
+        <div class="form-field">
+          <input type="tel" id="apply-phone" name="phone" placeholder=" " />
+          <label for="apply-phone">Telefon</label>
+        </div>
+        <div class="form-field">
+          <textarea id="apply-message" name="message" placeholder=" " rows="4"></textarea>
+          <label for="apply-message">Berätta kort om dig själv</label>
+        </div>
+
+        <!-- CV upload drop zone -->
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="cv-upload" name="cv" accept=".pdf,.doc,.docx" class="upload-zone__input" />
+          <div class="upload-zone__content">
+            <span class="upload-zone__icon">📄</span>
+            <span class="upload-zone__text">Dra och släpp CV här, eller <strong>klicka för att välja fil</strong></span>
+            <span class="upload-zone__hint">.pdf, .doc, .docx — max 10 MB</span>
+          </div>
+          <span class="upload-zone__filename" id="upload-filename"></span>
+        </div>
+
+        <label class="form-checkbox">
+          <input type="checkbox" name="gdpr" required id="apply-gdpr" />
+          <span>Jag godkänner att mina uppgifter behandlas enligt <a href="/integritetspolicy" target="_blank">integritetspolicyn</a>.</span>
+        </label>
+        <button type="submit" class="btn btn--primary form-submit" disabled>Skicka ansökan</button>
+        <div class="form-status" id="apply-status" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .employer-brand h2 { margin-bottom: var(--space-md); }
+  .employer-brand p { color: var(--color-body); }
+
+  .contact-form { display: flex; flex-direction: column; gap: var(--space-lg); }
+  .form-field { position: relative; }
+  .form-field input,
+  .form-field textarea {
+    width: 100%; font-family: var(--font-body); font-size: var(--text-base);
+    padding: 1rem 0 0.5rem; border: none; border-bottom: 2px solid var(--color-border);
+    background: transparent; color: var(--color-ink); outline: none;
+    transition: border-color var(--transition-fast);
+  }
+  .form-field input:focus, .form-field textarea:focus { border-bottom-color: var(--color-red); }
+  .form-field label {
+    position: absolute; left: 0; top: 0.9rem; font-size: var(--text-base);
+    color: var(--color-muted); pointer-events: none; transition: all var(--transition-fast);
+  }
+  .form-field input:focus ~ label, .form-field input:not(:placeholder-shown) ~ label,
+  .form-field textarea:focus ~ label, .form-field textarea:not(:placeholder-shown) ~ label {
+    top: -0.25rem; font-size: var(--text-xs); color: var(--color-red);
+  }
+
+  .upload-zone {
+    border: 2px dashed var(--color-border);
+    border-radius: 0.75rem;
+    padding: var(--space-2xl);
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--color-red);
+    background: var(--color-red-light);
+  }
+  .upload-zone__input {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer;
+  }
+  .upload-zone__icon { font-size: 2rem; display: block; margin-bottom: var(--space-sm); }
+  .upload-zone__text { font-size: var(--text-sm); color: var(--color-body); }
+  .upload-zone__hint { display: block; font-size: var(--text-xs); color: var(--color-muted); margin-top: var(--space-xs); }
+  .upload-zone__filename { display: block; margin-top: var(--space-sm); font-size: var(--text-sm); font-weight: 600; color: var(--color-ink); }
+
+  .form-checkbox { display: flex; gap: var(--space-sm); font-size: var(--text-sm); color: var(--color-body); cursor: pointer; }
+  .form-checkbox input { accent-color: var(--color-red); }
+  .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .form-status { font-size: var(--text-sm); padding: 0.75rem 1rem; border-radius: 0.5rem; display: none; }
+  .form-status.success { display: block; background: #ecfdf5; color: #065f46; }
+  .form-status.error { display: block; background: var(--color-red-light); color: var(--color-red); }
+</style>
+
+<script>
+  // Drag and drop + file selection
+  const zone = document.getElementById('upload-zone');
+  const input = document.getElementById('cv-upload') as HTMLInputElement;
+  const filename = document.getElementById('upload-filename');
+  if (zone && input && filename) {
+    ['dragenter', 'dragover'].forEach(e => zone.addEventListener(e, () => zone.classList.add('dragover')));
+    ['dragleave', 'drop'].forEach(e => zone.addEventListener(e, () => zone.classList.remove('dragover')));
+    input.addEventListener('change', () => {
+      filename.textContent = input.files?.[0]?.name || '';
+    });
+  }
+
+  // GDPR + submit
+  const form = document.getElementById('apply-form') as HTMLFormElement;
+  const gdpr = document.getElementById('apply-gdpr') as HTMLInputElement;
+  const submit = form?.querySelector('.form-submit') as HTMLButtonElement;
+  const status = document.getElementById('apply-status');
+  if (gdpr && submit) {
+    gdpr.addEventListener('change', () => { submit.disabled = !gdpr.checked; });
+  }
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!status) return;
+    submit.disabled = true;
+    try {
+      const res = await fetch('/api/apply', { method: 'POST', body: new FormData(form) });
+      if (res.ok) {
+        status.className = 'form-status success';
+        status.textContent = 'Tack för din ansökan! Vi hör av oss.';
+        form.reset();
+        if (filename) filename.textContent = '';
+      } else throw new Error('fail');
+    } catch {
+      status.className = 'form-status error';
+      status.textContent = 'Något gick fel. Försök igen eller maila oss.';
+    } finally {
+      submit.disabled = false;
+    }
+  });
+</script>

@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+---
+
+<BaseLayout title="Integritetspolicy" description="Så behandlar Molkom EL dina personuppgifter. GDPR-information.">
+  <Hero title="Integritetspolicy" variant="narrow" />
+
+  <section class="section">
+    <div class="container container--narrow privacy-content">
+      <h2>Personuppgiftsansvarig</h2>
+      <p>Molkom EL<br />Org.nr: XXX XXX-XXXX<br />Adress: [Adress]<br />E-post: info@molkom-el.se</p>
+
+      <h2>Vilka uppgifter samlar vi in?</h2>
+      <p>Vi samlar in de uppgifter du lämnar via våra kontaktformulär: namn, telefonnummer, e-postadress, och eventuellt meddelande. Vid spontanansökan samlar vi även in CV-filer.</p>
+
+      <h2>Syfte och rättslig grund</h2>
+      <p>Vi behandlar dina uppgifter för att kunna besvara din förfrågan och ge dig den service du efterfrågar. Den rättsliga grunden är berättigat intresse (kontaktförfrågningar) eller samtycke (spontanansökan).</p>
+
+      <h2>Lagringstid</h2>
+      <p>Kontaktuppgifter sparas i högst 12 månader efter senaste kontakt. CV-filer och ansökningar sparas i högst 24 månader, om du inte begär radering tidigare.</p>
+
+      <h2>Mottagare</h2>
+      <p>Dina uppgifter delas inte med tredje part utöver vad som krävs för att leverera tjänsten (t.ex. e-postleverantör).</p>
+
+      <h2>Dina rättigheter</h2>
+      <p>Du har rätt att begära tillgång till, rättelse eller radering av dina personuppgifter. Du kan även invända mot behandling eller begära begränsning. Kontakta oss på info@molkom-el.se.</p>
+
+      <h2>Klagomål</h2>
+      <p>Om du anser att vi behandlar dina uppgifter felaktigt har du rätt att lämna klagomål till Integritetsskyddsmyndigheten (IMY), <a href="https://www.imy.se" target="_blank" rel="noopener">www.imy.se</a>.</p>
+
+      <h2>Cookies</h2>
+      <p>Denna webbplats använder nödvändiga cookies för grundläggande funktionalitet (t.ex. att spara ditt val om cookies). Vi använder inga tredjepartscookies för spårning eller marknadsföring.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .privacy-content h2 {
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-sm);
+    font-size: var(--text-xl);
+  }
+
+  .privacy-content h2:first-child {
+    margin-top: 0;
+  }
+
+  .privacy-content p {
+    margin-bottom: var(--space-md);
+    line-height: 1.7;
+  }
+
+  .privacy-content a {
+    color: var(--color-red);
+    text-decoration: underline;
+  }
+</style>

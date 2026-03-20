@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import EntrepreneurForm from '../components/EntrepreneurForm.astro';
+---
+
+<BaseLayout title="Kontakt" description="Kontakta Molkom EL för offert, rådgivning eller entreprenadförfrågan. Ring eller fyll i formuläret.">
+  <Hero title="Kontakt" subtitle="Ring, maila eller fyll i formuläret — vi återkommer snabbt." variant="narrow" />
+
+  <!-- Flow selector -->
+  <section class="section">
+    <div class="container">
+      <div class="flow-selector">
+        <a href="#privat-form" class="flow-card">
+          <span class="flow-card__icon">🏠</span>
+          <h3 class="flow-card__title">Privatperson / mindre jobb</h3>
+          <p class="flow-card__desc">Offert, bokning eller frågor om elinstallation i hemmet eller på gården.</p>
+        </a>
+        <a href="#b2b-form" class="flow-card">
+          <span class="flow-card__icon">🏗</span>
+          <h3 class="flow-card__title">Företag / entreprenad</h3>
+          <p class="flow-card__desc">Entreprenadförfrågan, bemanning eller elkraftsprojekt.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Private form -->
+  <section class="section section--surface" id="privat-form">
+    <div class="container" style="max-width: 700px;">
+      <h2 style="margin-bottom: var(--space-xl);">Få hjälp / offert</h2>
+      <ContactForm />
+    </div>
+  </section>
+
+  <!-- B2B form -->
+  <section class="section" id="b2b-form">
+    <div class="container" style="max-width: 700px;">
+      <h2 style="margin-bottom: var(--space-xl);">Entreprenadförfrågan</h2>
+      <EntrepreneurForm />
+    </div>
+  </section>
+
+  <!-- Contact info sidebar -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="contact-info-grid">
+        <div>
+          <h3>Molkom</h3>
+          <p>Adress kommer<br />Molkom</p>
+        </div>
+        <div>
+          <h3>Karlstad</h3>
+          <p>Adress kommer<br />Karlstad</p>
+        </div>
+        <div>
+          <h3>Kontaktuppgifter</h3>
+          <p><a href="tel:+46XXXXXXXXX">+46 XXX-XXX XX XX</a><br /><a href="mailto:info@molkom-el.se">info@molkom-el.se</a><br />Org.nr: XXX XXX-XXXX</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .flow-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .flow-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-2xl);
+    background: var(--color-white);
+    border: 2px solid var(--color-border);
+    border-radius: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all var(--transition-base);
+  }
+
+  .flow-card:hover {
+    border-color: var(--color-red);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .flow-card__icon { font-size: 2rem; margin-bottom: var(--space-md); }
+  .flow-card__title { font-family: var(--font-body); font-size: var(--text-lg); font-weight: 600; margin-bottom: var(--space-sm); }
+  .flow-card__desc { font-size: var(--text-sm); color: var(--color-body); }
+
+  .contact-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+  }
+
+  .contact-info-grid h3 {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+  }
+
+  .contact-info-grid a { color: var(--color-red); }
+
+  @media (max-width: 768px) {
+    .flow-selector, .contact-info-grid { grid-template-columns: 1fr; }
+  }
+</style>
