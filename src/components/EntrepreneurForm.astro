@@ -1,0 +1,201 @@
+<form class="contact-form" id="b2b-form" novalidate>
+  <div class="form-row">
+    <div class="form-field">
+      <input type="text" id="b2b-company" name="company" placeholder=" " required />
+      <label for="b2b-company">Företagsnamn</label>
+    </div>
+    <div class="form-field">
+      <input type="text" id="b2b-contact" name="contactPerson" placeholder=" " required />
+      <label for="b2b-contact">Kontaktperson</label>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-field">
+      <input type="text" id="b2b-phone" name="phone" placeholder=" " required />
+      <label for="b2b-phone">Telefon</label>
+    </div>
+    <div class="form-field">
+      <input type="email" id="b2b-email" name="email" placeholder=" " required />
+      <label for="b2b-email">E-post</label>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-field">
+      <select id="b2b-voltage" name="voltage" required>
+        <option value="" disabled selected>Välj spänningsnivå</option>
+        <option value="0-0.4kV">0–0,4 kV</option>
+        <option value="10-145kV">10–145 kV</option>
+        <option value="both">Båda</option>
+        <option value="other">Övrigt</option>
+      </select>
+      <label for="b2b-voltage" class="select-label">Spänningsnivå</label>
+    </div>
+    <div class="form-field">
+      <input type="text" id="b2b-location" name="location" placeholder=" " />
+      <label for="b2b-location">Plats / ort</label>
+    </div>
+  </div>
+  <div class="form-field">
+    <input type="text" id="b2b-timeline" name="timeline" placeholder=" " />
+    <label for="b2b-timeline">Önskad tidsplan</label>
+  </div>
+  <fieldset class="form-fieldset">
+    <legend>Dokumentationskrav</legend>
+    <label class="form-checkbox"><input type="checkbox" name="docs" value="protocol" /><span>Provningsprotokoll</span></label>
+    <label class="form-checkbox"><input type="checkbox" name="docs" value="drawings" /><span>Ritningar</span></label>
+    <label class="form-checkbox"><input type="checkbox" name="docs" value="instructions" /><span>Drift- och underhållsinstruktioner</span></label>
+    <label class="form-checkbox"><input type="checkbox" name="docs" value="other" /><span>Annat</span></label>
+  </fieldset>
+  <div class="form-field">
+    <textarea id="b2b-message" name="message" placeholder=" " rows="4"></textarea>
+    <label for="b2b-message">Meddelande</label>
+  </div>
+  <label class="form-checkbox">
+    <input type="checkbox" name="gdpr" required id="b2b-gdpr" />
+    <span>Jag godkänner att mina uppgifter behandlas enligt <a href="/integritetspolicy" target="_blank">integritetspolicyn</a>.</span>
+  </label>
+  <button type="submit" class="btn btn--primary form-submit" disabled>Skicka entreprenadförfrågan</button>
+  <div class="form-status" id="b2b-status" aria-live="polite"></div>
+</form>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+
+  .form-field {
+    position: relative;
+  }
+
+  .form-field input,
+  .form-field textarea,
+  .form-field select {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    padding: 1rem 0 0.5rem;
+    border: none;
+    border-bottom: 2px solid var(--color-border);
+    background: transparent;
+    color: var(--color-ink);
+    transition: border-color var(--transition-fast);
+    outline: none;
+  }
+
+  .form-field input:focus,
+  .form-field textarea:focus,
+  .form-field select:focus {
+    border-bottom-color: var(--color-red);
+  }
+
+  .form-field label {
+    position: absolute;
+    left: 0;
+    top: 0.9rem;
+    font-size: var(--text-base);
+    color: var(--color-muted);
+    pointer-events: none;
+    transition: all var(--transition-fast);
+  }
+
+  .form-field input:focus ~ label,
+  .form-field input:not(:placeholder-shown) ~ label,
+  .form-field textarea:focus ~ label,
+  .form-field textarea:not(:placeholder-shown) ~ label {
+    top: -0.25rem;
+    font-size: var(--text-xs);
+    color: var(--color-red);
+  }
+
+  .select-label {
+    top: -0.25rem !important;
+    font-size: var(--text-xs) !important;
+    color: var(--color-muted) !important;
+  }
+
+  .form-fieldset {
+    border: none;
+    padding: 0;
+  }
+
+  .form-fieldset legend {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-ink-light);
+    margin-bottom: var(--space-sm);
+  }
+
+  .form-fieldset .form-checkbox {
+    margin-bottom: var(--space-xs);
+  }
+
+  .form-checkbox {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: flex-start;
+    font-size: var(--text-sm);
+    color: var(--color-body);
+    cursor: pointer;
+  }
+
+  .form-checkbox input { accent-color: var(--color-red); }
+
+  .form-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .form-status {
+    font-size: var(--text-sm);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    display: none;
+  }
+
+  .form-status.success { display: block; background: #ecfdf5; color: #065f46; }
+  .form-status.error { display: block; background: var(--color-red-light); color: var(--color-red); }
+
+  @media (max-width: 768px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('b2b-form') as HTMLFormElement;
+  const gdpr = document.getElementById('b2b-gdpr') as HTMLInputElement;
+  const submit = form?.querySelector('.form-submit') as HTMLButtonElement;
+  const status = document.getElementById('b2b-status');
+
+  if (gdpr && submit) {
+    gdpr.addEventListener('change', () => { submit.disabled = !gdpr.checked; });
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!status) return;
+    submit.disabled = true;
+    submit.textContent = 'Skickar...';
+    try {
+      const res = await fetch('/api/contact', { method: 'POST', body: new FormData(form) });
+      if (res.ok) {
+        status.className = 'form-status success';
+        status.textContent = 'Tack! Vi återkommer inom kort.';
+        form.reset();
+      } else { throw new Error('fail'); }
+    } catch {
+      status.className = 'form-status error';
+      status.textContent = 'Något gick fel. Försök igen eller ring oss.';
+    } finally {
+      submit.disabled = false;
+      submit.textContent = 'Skicka entreprenadförfrågan';
+    }
+  });
+</script>

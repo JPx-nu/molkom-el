@@ -1,0 +1,174 @@
+---
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+
+<form class={`contact-form ${compact ? 'contact-form--compact' : ''}`} id="contact-form" novalidate>
+  <div class="form-field">
+    <input type="text" id="cf-name" name="name" placeholder=" " required />
+    <label for="cf-name">Namn</label>
+  </div>
+  <div class="form-field">
+    <input type="text" id="cf-contact" name="contact" placeholder=" " required />
+    <label for="cf-contact">Telefon eller e-post</label>
+  </div>
+  <div class="form-field">
+    <textarea id="cf-message" name="message" placeholder=" " rows="4"></textarea>
+    <label for="cf-message">Meddelande</label>
+  </div>
+  <label class="form-checkbox">
+    <input type="checkbox" name="gdpr" required id="cf-gdpr" />
+    <span>Jag godkänner att mina uppgifter behandlas enligt <a href="/integritetspolicy" target="_blank">integritetspolicyn</a>.</span>
+  </label>
+  <button type="submit" class="btn btn--primary form-submit" disabled>Skicka förfrågan</button>
+  <div class="form-status" id="cf-status" aria-live="polite"></div>
+</form>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .form-field {
+    position: relative;
+  }
+
+  .form-field input,
+  .form-field textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    padding: 1rem 0 0.5rem;
+    border: none;
+    border-bottom: 2px solid var(--color-border);
+    background: transparent;
+    color: var(--color-ink);
+    transition: border-color var(--transition-fast);
+    outline: none;
+    resize: vertical;
+  }
+
+  .form-field input:focus,
+  .form-field textarea:focus {
+    border-bottom-color: var(--color-red);
+  }
+
+  .form-field label {
+    position: absolute;
+    left: 0;
+    top: 0.9rem;
+    font-size: var(--text-base);
+    color: var(--color-muted);
+    pointer-events: none;
+    transition: all var(--transition-fast);
+  }
+
+  .form-field input:focus ~ label,
+  .form-field input:not(:placeholder-shown) ~ label,
+  .form-field textarea:focus ~ label,
+  .form-field textarea:not(:placeholder-shown) ~ label {
+    top: -0.25rem;
+    font-size: var(--text-xs);
+    color: var(--color-red);
+  }
+
+  .form-checkbox {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: flex-start;
+    font-size: var(--text-sm);
+    color: var(--color-body);
+    cursor: pointer;
+  }
+
+  .form-checkbox input {
+    margin-top: 0.2rem;
+    accent-color: var(--color-red);
+  }
+
+  .form-checkbox a {
+    color: var(--color-red);
+    text-decoration: underline;
+  }
+
+  .form-submit {
+    align-self: flex-start;
+    width: auto;
+  }
+
+  .form-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .form-status {
+    font-size: var(--text-sm);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    display: none;
+  }
+
+  .form-status.success {
+    display: block;
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+  }
+
+  .form-status.error {
+    display: block;
+    background: var(--color-red-light);
+    color: var(--color-red);
+    border: 1px solid #fca5a5;
+  }
+
+  @media (max-width: 768px) {
+    .form-submit {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const gdpr = document.getElementById('cf-gdpr') as HTMLInputElement;
+  const submit = form?.querySelector('.form-submit') as HTMLButtonElement;
+  const status = document.getElementById('cf-status');
+
+  if (gdpr && submit) {
+    gdpr.addEventListener('change', () => {
+      submit.disabled = !gdpr.checked;
+    });
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!status) return;
+    submit.disabled = true;
+    submit.textContent = 'Skickar...';
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        body: new FormData(form),
+      });
+      if (res.ok) {
+        status.className = 'form-status success';
+        status.textContent = 'Tack! Vi återkommer inom kort.';
+        form.reset();
+      } else {
+        throw new Error('Server error');
+      }
+    } catch {
+      status.className = 'form-status error';
+      status.textContent = 'Något gick fel. Försök igen eller ring oss.';
+    } finally {
+      submit.disabled = false;
+      submit.textContent = 'Skicka förfrågan';
+    }
+  });
+</script>

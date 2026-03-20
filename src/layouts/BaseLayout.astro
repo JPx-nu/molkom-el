@@ -4,6 +4,7 @@ import OpenGraph from '../components/SEO/OpenGraph.astro';
 import SchemaMarkup from '../components/SEO/SchemaMarkup.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 
 interface Props {
   title: string;
@@ -79,5 +80,7 @@ const fullTitle = title === 'Molkom EL' ? title : `${title} | Molkom EL`;
     );
     reveals.forEach((el) => observer.observe(el));
   </script>
+
+  <CookieBanner />
 </body>
 </html>

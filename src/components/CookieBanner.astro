@@ -1,0 +1,84 @@
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookiemedgivande">
+  <div class="cookie-banner__inner container">
+    <p class="cookie-banner__text">
+      Vi använder nödvändiga cookies för att webbplatsen ska fungera.
+      <a href="/integritetspolicy">Läs mer i vår integritetspolicy</a>.
+    </p>
+    <div class="cookie-banner__actions">
+      <button class="btn btn--primary cookie-banner__btn" data-consent="all">Acceptera</button>
+      <button class="btn btn--outline cookie-banner__btn" data-consent="necessary">Bara nödvändiga</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: var(--color-white);
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -4px 20px rgba(15, 33, 55, 0.1);
+    padding: var(--space-lg) 0;
+    transform: translateY(100%);
+    transition: transform var(--transition-slow);
+  }
+
+  .cookie-banner.visible {
+    transform: translateY(0);
+  }
+
+  .cookie-banner__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xl);
+  }
+
+  .cookie-banner__text {
+    font-size: var(--text-sm);
+    color: var(--color-body);
+    flex: 1;
+  }
+
+  .cookie-banner__text a {
+    color: var(--color-red);
+    text-decoration: underline;
+  }
+
+  .cookie-banner__actions {
+    display: flex;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+  }
+
+  .cookie-banner__btn {
+    padding: 0.5rem 1.25rem;
+    font-size: var(--text-xs);
+  }
+
+  @media (max-width: 768px) {
+    .cookie-banner__inner {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
+
+<script>
+  const banner = document.getElementById('cookie-banner');
+  const consent = localStorage.getItem('cookie-consent');
+
+  if (!consent && banner) {
+    requestAnimationFrame(() => banner.classList.add('visible'));
+    banner.querySelectorAll('[data-consent]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const value = (btn as HTMLElement).dataset.consent;
+        localStorage.setItem('cookie-consent', value || 'necessary');
+        banner.classList.remove('visible');
+      });
+    });
+  }
+</script>
