@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+import OpenGraph from '../components/SEO/OpenGraph.astro';
+import SchemaMarkup from '../components/SEO/SchemaMarkup.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  schemaType?: 'homepage' | 'service';
+  serviceName?: string;
+  serviceDescription?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  schemaType,
+  serviceName,
+  serviceDescription,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = title === 'Molkom EL' ? title : `${title} | Molkom EL`;
+---
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+  <meta name="robots" content="index, follow" />
+
+  <OpenGraph
+    title={fullTitle}
+    description={description}
+    image={ogImage}
+    url={canonicalURL.toString()}
+  />
+
+  {schemaType && (
+    <SchemaMarkup
+      type={schemaType}
+      serviceName={serviceName}
+      serviceDescription={serviceDescription}
+    />
+  )}
+
+  <!-- Preconnect for Google Fonts performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body>
+  <slot />
+</body>
+</html>

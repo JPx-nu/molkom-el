@@ -1,0 +1,56 @@
+---
+interface Props {
+  type?: 'homepage' | 'service';
+  serviceName?: string;
+  serviceDescription?: string;
+}
+
+const { type = 'homepage', serviceName, serviceDescription } = Astro.props;
+
+const businessSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'Electrician'],
+  name: 'Molkom EL',
+  description: 'Elinstallationer från 0,4 till 145 kV — Molkom, Karlstad och hela Sverige. Sedan 1925.',
+  foundingDate: '1925',
+  url: 'https://molkom-el.se',
+  telephone: '+46-XXX-XXXXXX',
+  email: 'info@molkom-el.se',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Molkom',
+    addressRegion: 'Värmland',
+    addressCountry: 'SE',
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: 'Sweden',
+  },
+  knowsAbout: [
+    'Elinstallation',
+    'Elkraft',
+    'Högspänning',
+    'Lågspänning',
+    'Lantbruksel',
+    'Entreprenad',
+  ],
+};
+
+const serviceSchema = serviceName ? {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: serviceName,
+  description: serviceDescription,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Molkom EL',
+  },
+} : null;
+---
+
+{type === 'homepage' && (
+  <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
+)}
+{serviceSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+)}
