@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import ProcessSteps from '../../components/ProcessSteps.astro';
+import CTABlock from '../../components/CTABlock.astro';
+import ROTPanel from '../../components/ROTPanel.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const { Content } = await render(service);
+const { title, metaDescription, tags, variant, ctaLabel, ctaHref, secondaryCTA, capabilities, courses } = service.data;
+---
+
+<BaseLayout
+  title={title}
+  description={metaDescription}
+  schemaType="service"
+  serviceName={title}
+  serviceDescription={metaDescription}
+>
+  <!-- Hero (narrow) -->
+  <Hero title={title} subtitle={service.data.description} variant="narrow" />
+
+  <!-- Body content -->
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="service-content">
+        <Content />
+      </div>
+
+      <!-- Tags -->
+      <div class="service-tags" style="margin-top: var(--space-xl);">
+        <span class="eyebrow" style="margin-right: var(--space-sm);">Passar för:</span>
+        {tags.map((tag) => (
+          <span class="service-tag">{tag}</span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Capability block (elkraft only) -->
+  {capabilities && capabilities.length > 0 && (
+    <section class="section section--surface">
+      <div class="container container--narrow">
+        <h2 style="margin-bottom: var(--space-xl);">Kapabilitet</h2>
+        <div class="capabilities-grid">
+          {capabilities.map((cap) => (
+            <div class="capability">
+              <span class="capability__label">{cap.label}</span>
+              <span class="capability__value">{cap.value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Course cards (utbildningar only) -->
+  {courses && courses.length > 0 && (
+    <section class="section section--surface">
+      <div class="container container--narrow">
+        <h2 style="margin-bottom: var(--space-xl);">Kurser</h2>
+        <div class="courses-grid">
+          {courses.map((course) => (
+            <div class="course-card">
+              <h3 class="course-card__name">{course.name}</h3>
+              <div class="course-card__meta">
+                <span>⏱ {course.duration}</span>
+                <span>🌐 {course.language}</span>
+              </div>
+              <a href={ctaHref} class="btn btn--primary" style="margin-top: var(--space-md); width: 100%;">Boka / Fråga om datum</a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ROT panel (lågspänning only) -->
+  {variant === 'lagspanning' && <ROTPanel />}
+
+  <!-- Process -->
+  <ProcessSteps />
+
+  <!-- CTA -->
+  <CTABlock
+    title="Intresserad?"
+    text="Kontakta oss för offert eller mer information."
+    primaryCTA={{ label: ctaLabel, href: ctaHref }}
+    secondaryCTA={secondaryCTA}
+  />
+</BaseLayout>
+
+<style>
+  .service-content :global(h2) {
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .service-content :global(ul) {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm) var(--space-xl);
+    margin: var(--space-md) 0;
+  }
+
+  .service-content :global(li) {
+    position: relative;
+    padding-left: 1.2rem;
+    font-size: var(--text-base);
+  }
+
+  .service-content :global(li)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 6px;
+    height: 6px;
+    background: var(--color-red);
+    border-radius: 50%;
+  }
+
+  .service-tag {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-light);
+    margin: 0.2rem;
+  }
+
+  .capabilities-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+
+  .capability {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .capability__label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-muted);
+  }
+
+  .capability__value {
+    font-size: var(--text-base);
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .course-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: var(--space-lg);
+  }
+
+  .course-card__name {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+  }
+
+  .course-card__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: var(--text-sm);
+    color: var(--color-body);
+  }
+
+  @media (max-width: 768px) {
+    .service-content :global(ul) {
+      grid-template-columns: 1fr;
+    }
+    .capabilities-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
