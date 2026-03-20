@@ -1,0 +1,73 @@
+---
+interface TrustItem {
+  label: string;
+  featured?: boolean;
+}
+
+const items: TrustItem[] = [
+  { label: 'Sedan 1925', featured: true },
+  { label: 'Registrerad hos Elsäkerhetsverket' },
+  { label: 'ID06' },
+  { label: 'Rikstäckande' },
+  { label: 'Dokumentation' },
+  { label: 'Utbildad personal' },
+];
+---
+
+<section class="trust-bar section">
+  <div class="container">
+    <div class="trust-bar__list">
+      {items.map((item) => (
+        <div class={`trust-bar__chip reveal ${item.featured ? 'trust-bar__chip--featured' : ''}`}>
+          {item.label}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .trust-bar__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    justify-content: center;
+  }
+
+  .trust-bar__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.2rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-ink-light);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 2rem;
+    box-shadow: inset 0 1px 2px rgba(15, 33, 55, 0.04);
+    white-space: nowrap;
+  }
+
+  .trust-bar__chip--featured {
+    background: var(--color-red-light);
+    color: var(--color-red);
+    border-color: transparent;
+    font-weight: 600;
+    font-size: var(--text-base);
+    padding: 0.7rem 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .trust-bar__list {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      justify-content: flex-start;
+      padding-bottom: var(--space-sm);
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .trust-bar__list::-webkit-scrollbar {
+      display: none;
+    }
+  }
+</style>

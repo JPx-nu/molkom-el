@@ -1,0 +1,108 @@
+---
+interface Step {
+  number: string;
+  title: string;
+  description: string;
+}
+
+const steps: Step[] = [
+  { number: '01', title: 'Kontakt', description: 'Ring eller skicka en förfrågan — vi återkommer snabbt.' },
+  { number: '02', title: 'Förslag & plan', description: 'Vi tar fram en lösning och offert anpassad för ert behov.' },
+  { number: '03', title: 'Utförande', description: 'Arbetet genomförs med säkerhet och kvalitet i fokus.' },
+  { number: '04', title: 'Dokumentation', description: 'Ni får full dokumentation och uppföljning efter avslutat arbete.' },
+];
+---
+
+<section class="process section section--surface">
+  <div class="container">
+    <h2 class="process__heading reveal">Så går det till</h2>
+    <div class="process__grid">
+      {steps.map((step, i) => (
+        <div class="process__step reveal" style={`animation-delay: ${i * 0.1}s`}>
+          <span class="process__number">{step.number}</span>
+          <div class="process__line" aria-hidden="true" />
+          <h3 class="process__title">{step.title}</h3>
+          <p class="process__desc">{step.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .process__heading {
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+  }
+
+  .process__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-xl);
+    position: relative;
+  }
+
+  .process__step {
+    text-align: center;
+    position: relative;
+  }
+
+  .process__number {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    color: var(--color-red);
+    margin-bottom: var(--space-md);
+  }
+
+  .process__line {
+    position: absolute;
+    top: 1.8rem;
+    left: 60%;
+    width: calc(100% - 20%);
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  .process__step:last-child .process__line {
+    display: none;
+  }
+
+  .process__title {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+  }
+
+  .process__desc {
+    font-size: var(--text-sm);
+    color: var(--color-body);
+    max-width: 220px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .process__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+    }
+    .process__line {
+      display: none;
+    }
+    .process__step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      column-gap: var(--space-lg);
+      text-align: left;
+    }
+    .process__number {
+      grid-row: 1 / -1;
+      align-self: center;
+    }
+    .process__desc {
+      max-width: none;
+    }
+  }
+</style>

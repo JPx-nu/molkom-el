@@ -1,0 +1,46 @@
+---
+interface Props {
+  title: string;
+  text?: string;
+  primaryCTA: { label: string; href: string };
+  secondaryCTA?: { label: string; href: string };
+}
+
+const { title, text, primaryCTA, secondaryCTA } = Astro.props;
+---
+
+<section class="cta-block section--dark">
+  <div class="container" style="text-align: center; padding: var(--space-4xl) 0;">
+    <h2 class="cta-block__title">{title}</h2>
+    {text && <p class="cta-block__text">{text}</p>}
+    <div class="cta-block__actions">
+      <a href={primaryCTA.href} class="btn btn--white">{primaryCTA.label}</a>
+      {secondaryCTA && (
+        <a href={secondaryCTA.href} class="btn" style="border: 1.5px solid rgba(255,255,255,0.3); color: white;">
+          {secondaryCTA.label}
+        </a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-block__title {
+    color: var(--color-white);
+    margin-bottom: var(--space-md);
+  }
+
+  .cta-block__text {
+    font-size: var(--text-lg);
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 500px;
+    margin: 0 auto var(--space-xl);
+  }
+
+  .cta-block__actions {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>
