@@ -1,5 +1,25 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import TrustBar from '../components/TrustBar.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import CTABlock from '../components/CTABlock.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+
+import heroImage from '../assets/pics/3.jpg';
+import barnImage from '../assets/pics/2.jpg';
+import substationImage from '../assets/pics/1.jpg';
+import aboutImage from '../assets/pics/4.jpg';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+
+const serviceImages: Record<string, ImageMetadata> = {
+  '2.jpg': barnImage,
+  '1.jpg': substationImage,
+};
 ---
 
 <BaseLayout
@@ -7,10 +27,177 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="Elinstallationer från 0,4 till 145 kV — Molkom, Karlstad och hela Sverige. Sedan 1925."
   schemaType="homepage"
 >
-  <section style="padding-top: calc(var(--header-height) + 4rem); min-height: 80vh;">
+  <!-- Hero -->
+  <Hero
+    eyebrow="Sedan 1925"
+    title="Ett anrikt företag med framtiden i fokus"
+    subtitle="Elinstallationer från 0,4 till 145 kV — Molkom, Karlstad och hela Sverige."
+    primaryCTA={{ label: 'Kontakta oss', href: '/kontakt' }}
+    secondaryCTA={{ label: 'Våra tjänster', href: '#tjanster' }}
+    image={heroImage}
+    variant="full"
+  />
+
+  <!-- Service Cards -->
+  <section class="section" id="tjanster">
     <div class="container">
-      <h1>Molkom EL — Under uppbyggnad</h1>
-      <p>Placeholder for homepage content.</p>
+      <h2 class="section-heading reveal" style="text-align: center; margin-bottom: var(--space-3xl);">Våra tjänster</h2>
+      <div class="services-grid">
+        {services.map((service) => (
+          <ServiceCard
+            title={service.data.shortTitle}
+            description={service.data.description}
+            href={`/tjanster/${service.id}`}
+            image={service.data.image ? serviceImages[service.data.image] : undefined}
+            icon={service.data.icon}
+          />
+        ))}
+      </div>
     </div>
   </section>
+
+  <!-- Trust Bar -->
+  <TrustBar />
+
+  <!-- Om oss -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="about-preview">
+        <div class="about-preview__text reveal">
+          <span class="eyebrow">Om Molkom EL</span>
+          <h2>Erfarenhet sedan 1925</h2>
+          <p>
+            Molkom EL har levererat elinstallationer i snart hundra år. Från grunden i Molkom
+            har vi vuxit till en rikstäckande aktör med kompetens inom allt från villainstallationer
+            och lantbruksel till elkraftsanläggningar och högspänningsarbeten upp till 145 kV.
+          </p>
+          <p>
+            Vi tror på säkerhet, kvalitet och tydlig dokumentation i varje uppdrag —
+            oavsett om det gäller en laddbox hemma eller en kraftstation.
+          </p>
+          <a href="/om-oss" class="btn btn--outline" style="margin-top: var(--space-lg);">Läs mer om oss</a>
+        </div>
+        <div class="about-preview__image reveal">
+          <Image
+            src={aboutImage}
+            alt="Elkraftsanläggning i solnedgång"
+            widths={[400, 600]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            class="about-preview__img"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <ProcessSteps />
+
+  <!-- Contact Block -->
+  <section class="section" id="kontakt">
+    <div class="container">
+      <div class="contact-split">
+        <div class="contact-split__info reveal">
+          <span class="eyebrow">Kontakt</span>
+          <h2>Hör av dig</h2>
+          <p>Ring, maila eller fyll i formuläret — vi återkommer inom kort.</p>
+          <div class="contact-split__details">
+            <a href="tel:+46XXXXXXXXX" class="contact-split__link">📞 +46 XXX-XXX XX XX</a>
+            <a href="mailto:info@molkom-el.se" class="contact-split__link">✉️ info@molkom-el.se</a>
+            <span class="contact-split__link">📍 Molkom / Karlstad</span>
+          </div>
+        </div>
+        <div class="contact-split__form reveal">
+          <ContactForm />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <CTABlock
+    title="Redo att komma igång?"
+    text="Kontakta oss för offert, rådgivning eller bokning — vi återkommer snabbt."
+    primaryCTA={{ label: 'Kontakta oss', href: '/kontakt' }}
+    secondaryCTA={{ label: 'Ring oss', href: 'tel:+46XXXXXXXXX' }}
+  />
 </BaseLayout>
+
+<style>
+  .services-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xl);
+    justify-content: center;
+  }
+
+  .services-grid > :global(*) {
+    flex: 0 1 calc((100% - 2 * var(--space-xl)) / 3);
+    min-width: 280px;
+  }
+
+  .about-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3xl);
+    align-items: center;
+  }
+
+  .about-preview__text h2 {
+    margin: var(--space-sm) 0 var(--space-md);
+  }
+
+  .about-preview__text p {
+    margin-bottom: var(--space-md);
+  }
+
+  .about-preview__img {
+    border-radius: 0.75rem;
+    width: 100%;
+    height: auto;
+  }
+
+  .contact-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3xl);
+    align-items: start;
+  }
+
+  .contact-split__info h2 {
+    margin: var(--space-sm) 0 var(--space-md);
+  }
+
+  .contact-split__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: var(--space-xl);
+  }
+
+  .contact-split__link {
+    font-size: var(--text-base);
+    color: var(--color-ink-light);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .contact-split__link:hover {
+    color: var(--color-red);
+  }
+
+  @media (max-width: 768px) {
+    .contact-split {
+      grid-template-columns: 1fr;
+    }
+    .services-grid {
+      flex-direction: column;
+    }
+    .about-preview {
+      grid-template-columns: 1fr;
+    }
+    .about-preview__image {
+      order: -1;
+    }
+  }
+</style>
