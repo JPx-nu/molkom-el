@@ -1,17 +1,16 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Molkom EL"
+  description="Elinstallationer från 0,4 till 145 kV — Molkom, Karlstad och hela Sverige. Sedan 1925."
+  schemaType="homepage"
+>
+  <section style="padding-top: calc(var(--header-height) + 4rem); min-height: 80vh;">
+    <div class="container">
+      <h1>Molkom EL — Under uppbyggnad</h1>
+      <p>Placeholder for homepage content.</p>
+    </div>
+  </section>
+</BaseLayout>

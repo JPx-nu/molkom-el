@@ -1,0 +1,223 @@
+---
+const currentYear = new Date().getFullYear();
+
+const quickLinks = [
+  { label: 'Tjänster', href: '/tjanster/lagspanning' },
+  { label: 'Utbildningar', href: '/tjanster/utbildningar' },
+  { label: 'Maskinuthyrning', href: '/tjanster/maskinuthyrning' },
+  { label: 'Om oss', href: '/om-oss' },
+  { label: 'Kontakt', href: '/kontakt' },
+  { label: 'Spontanansökan', href: '/spontanansokan' },
+];
+
+const trustBadges = [
+  'Registrerad hos Elsäkerhetsverket',
+  'ID06',
+  'Sedan 1925',
+];
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <!-- Contact -->
+      <div class="footer__col">
+        <div class="footer__logo">
+          <span class="footer__logo-mark">ME</span>
+          <span class="footer__logo-text">Molkom EL</span>
+        </div>
+        <p class="footer__tagline">Elinstallationer sedan 1925</p>
+        <div class="footer__contact-list">
+          <a href="tel:+46XXXXXXXXX" class="footer__contact-link">+46 XXX-XXX XX XX</a>
+          <a href="mailto:info@molkom-el.se" class="footer__contact-link">info@molkom-el.se</a>
+          <span class="footer__contact-link">Molkom / Karlstad</span>
+          <span class="footer__contact-link footer__org">Org.nr: XXX XXX-XXXX</span>
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div class="footer__col">
+        <h4 class="footer__heading">Sidor</h4>
+        <ul class="footer__links">
+          {quickLinks.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Trust & legal -->
+      <div class="footer__col">
+        <h4 class="footer__heading">Trygghet</h4>
+        <ul class="footer__badges">
+          {trustBadges.map((badge) => (
+            <li class="footer__badge">{badge}</li>
+          ))}
+        </ul>
+        <a
+          href="https://www.elsakerhetsverket.se/kollaelforetaget"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer__esv-link"
+        >
+          Kolla elföretaget →
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer__bottom">
+      <span>© {currentYear} Molkom EL. Alla rättigheter förbehållna.</span>
+      <a href="/integritetspolicy">Integritetspolicy</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-ink);
+    color: rgba(255, 255, 255, 0.7);
+    padding: var(--space-4xl) 0 0;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: var(--space-3xl);
+  }
+
+  .footer__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .footer__logo-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--color-red);
+    color: var(--color-white);
+    font-weight: 700;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .footer__logo-text {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-white);
+  }
+
+  .footer__tagline {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-lg);
+  }
+
+  .footer__contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .footer__contact-link {
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .footer__contact-link:hover {
+    color: var(--color-white);
+  }
+
+  .footer__heading {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-white);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-md);
+  }
+
+  .footer__links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .footer__links a {
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .footer__links a:hover {
+    color: var(--color-white);
+  }
+
+  .footer__badges {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .footer__badge {
+    font-size: var(--text-sm);
+    padding: 0.3rem 0.6rem;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 0.25rem;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .footer__esv-link {
+    display: inline-block;
+    margin-top: var(--space-md);
+    font-size: var(--text-sm);
+    color: var(--color-red);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .footer__esv-link:hover {
+    color: #e8384f;
+  }
+
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-lg) 0;
+    margin-top: var(--space-3xl);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: var(--text-xs);
+  }
+
+  .footer__bottom a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+  }
+
+  .footer__bottom a:hover {
+    color: var(--color-white);
+  }
+
+  @media (max-width: 768px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+    }
+    .footer__bottom {
+      flex-direction: column;
+      gap: var(--space-sm);
+      text-align: center;
+    }
+  }
+</style>

@@ -1,0 +1,410 @@
+---
+interface NavItem {
+  label: string;
+  href: string;
+  children?: { label: string; href: string }[];
+}
+
+const navItems: NavItem[] = [
+  {
+    label: 'Tjänster',
+    href: '/tjanster',
+    children: [
+      { label: '0–0,4 kV', href: '/tjanster/lagspanning' },
+      { label: '10–145 kV', href: '/tjanster/elkraft' },
+      { label: 'Entreprenad & personal', href: '/tjanster/entreprenad' },
+    ],
+  },
+  { label: 'Utbildningar', href: '/tjanster/utbildningar' },
+  { label: 'Maskinuthyrning', href: '/tjanster/maskinuthyrning' },
+  { label: 'Om oss', href: '/om-oss' },
+  { label: 'Kontakt', href: '/kontakt' },
+  { label: 'Spontanansökan', href: '/spontanansokan' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="header" id="site-header">
+  <div class="header__inner container">
+    <!-- Logo -->
+    <a href="/" class="header__logo" aria-label="Molkom EL – Startsida">
+      <span class="header__logo-mark">ME</span>
+      <span class="header__logo-text">Molkom EL</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="header__nav" aria-label="Huvudnavigering">
+      <ul class="header__nav-list">
+        {navItems.map((item) => (
+          <li class={`header__nav-item ${item.children ? 'has-dropdown' : ''}`}>
+            <a
+              href={item.href}
+              class={`header__nav-link ${currentPath.startsWith(item.href) ? 'active' : ''}`}
+            >
+              {item.label}
+              {item.children && (
+                <svg class="header__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              )}
+            </a>
+            {item.children && (
+              <ul class="header__dropdown">
+                {item.children.map((child) => (
+                  <li>
+                    <a href={child.href} class="header__dropdown-link">
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Phone + CTA -->
+    <div class="header__actions">
+      <a href="tel:+46XXXXXXXXX" class="header__phone">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M14.5 11.5v2a1.33 1.33 0 01-1.45 1.33 13.2 13.2 0 01-5.76-2.05 13 13 0 01-4-4A13.2 13.2 0 011.24 3 1.33 1.33 0 012.56 1.5h2A1.33 1.33 0 015.9 2.65a8.56 8.56 0 00.47 1.87 1.33 1.33 0 01-.3 1.41l-.85.85a10.67 10.67 0 004 4l.85-.85a1.33 1.33 0 011.41-.3 8.56 8.56 0 001.87.47 1.33 1.33 0 011.15 1.4z" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        <span>Ring oss</span>
+      </a>
+      <a href="/kontakt" class="btn btn--primary header__cta">Kontakta oss</a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button class="header__hamburger" aria-label="Öppna meny" aria-expanded="false" id="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile overlay -->
+  <div class="header__mobile-overlay" id="mobile-menu">
+    <nav aria-label="Mobilnavigering">
+      <ul class="header__mobile-list">
+        {navItems.map((item) => (
+          <li>
+            <a href={item.href} class="header__mobile-link">{item.label}</a>
+            {item.children && (
+              <ul class="header__mobile-sub">
+                {item.children.map((child) => (
+                  <li><a href={child.href}>{child.label}</a></li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div class="header__mobile-actions">
+        <a href="tel:+46XXXXXXXXX" class="btn btn--outline" style="width:100%">Ring oss</a>
+        <a href="/kontakt" class="btn btn--primary" style="width:100%">Kontakta oss</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: var(--header-height);
+    transition: background var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .header.scrolled {
+    background: var(--color-white);
+    box-shadow: var(--shadow-md);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--color-ink);
+    z-index: 101;
+  }
+
+  .header__logo-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--color-red);
+    color: var(--color-white);
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  .header__logo-text {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--color-ink);
+  }
+
+  /* Nav */
+  .header__nav-list {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+  }
+
+  .header__nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 0.75rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-ink-light);
+    text-decoration: none;
+    border-radius: 0.375rem;
+    transition: color var(--transition-fast), background var(--transition-fast);
+    position: relative;
+  }
+
+  .header__nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0.25rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 2px;
+    background: var(--color-red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+  }
+
+  .header__nav-link:hover::after,
+  .header__nav-link.active::after {
+    transform: scaleX(1);
+  }
+
+  .header__nav-link:hover {
+    color: var(--color-ink);
+  }
+
+  .header__chevron {
+    transition: transform var(--transition-fast);
+  }
+
+  /* Dropdown */
+  .has-dropdown {
+    position: relative;
+  }
+
+  .header__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-lg);
+    list-style: none;
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
+    transition: all var(--transition-fast);
+  }
+
+  .has-dropdown:hover .header__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .has-dropdown:hover .header__chevron {
+    transform: rotate(180deg);
+  }
+
+  .header__dropdown-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-body);
+    text-decoration: none;
+    transition: background var(--transition-fast), color var(--transition-fast);
+  }
+
+  .header__dropdown-link:hover {
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+
+  /* Actions */
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .header__phone {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-ink-light);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .header__phone:hover {
+    color: var(--color-red);
+  }
+
+  .header__cta {
+    padding: 0.5rem 1.25rem;
+    font-size: var(--text-xs);
+  }
+
+  /* Hamburger */
+  .header__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    z-index: 101;
+  }
+
+  .header__hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-ink);
+    transition: all var(--transition-base);
+    border-radius: 1px;
+  }
+
+  .header__hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .header__hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .header__hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* Mobile overlay */
+  .header__mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--color-white);
+    z-index: 99;
+    padding: calc(var(--header-height) + 2rem) var(--space-lg) var(--space-lg);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-base), visibility var(--transition-base);
+  }
+
+  .header__mobile-overlay.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header__mobile-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .header__mobile-link {
+    display: block;
+    padding: 0.75rem 0;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .header__mobile-sub {
+    list-style: none;
+    padding-left: 1rem;
+  }
+
+  .header__mobile-sub a {
+    display: block;
+    padding: 0.5rem 0;
+    font-size: var(--text-base);
+    color: var(--color-body);
+    text-decoration: none;
+  }
+
+  .header__mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header__nav,
+    .header__actions {
+      display: none;
+    }
+    .header__hamburger {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  // Scroll detection for header background
+  const header = document.getElementById('site-header');
+  if (header) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        header.classList.toggle('scrolled', !entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: '-1px 0px 0px 0px' }
+    );
+    // Create a sentinel element at the top of the page
+    const sentinel = document.createElement('div');
+    sentinel.style.position = 'absolute';
+    sentinel.style.top = '0';
+    sentinel.style.height = '1px';
+    sentinel.style.width = '100%';
+    document.body.prepend(sentinel);
+    observer.observe(sentinel);
+  }
+
+  // Mobile menu toggle
+  const toggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (toggle && mobileMenu) {
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+  }
+</script>
