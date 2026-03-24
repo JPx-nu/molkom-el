@@ -15,3 +15,9 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
+
+# Playwright screenshots (debug artifacts)
+/*.png
+
+# Claude Code local settings
+.claude/settings.local.json

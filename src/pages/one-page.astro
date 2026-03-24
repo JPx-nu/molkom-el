@@ -1,5 +1,7 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/global.css';
+import OpenGraph from '../components/SEO/OpenGraph.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import Hero from '../components/Hero.astro';
 import TrustBar from '../components/TrustBar.astro';
 import ContactForm from '../components/ContactForm.astro';
@@ -7,20 +9,42 @@ import { getCollection } from 'astro:content';
 import heroImage from '../assets/pics/3.jpg';
 
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+
+const title = 'Molkom EL — Översikt';
+const description = 'Elinstallationer från 0,4 till 145 kV. Molkom, Karlstad, hela Sverige. Sedan 1925.';
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<BaseLayout title="Molkom EL — Översikt" description="Elinstallationer från 0,4 till 145 kV. Molkom, Karlstad, hela Sverige. Sedan 1925.">
-  <!-- Dot navigation -->
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+  <meta name="robots" content="index, follow" />
+  <OpenGraph title={title} description={description} url={canonicalURL.toString()} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body class="onepage-body">
+
+  <!-- Minimal floating logo — links back to main site -->
+  <a href="/" class="onepage-logo" aria-label="Molkom EL — Startsida">
+    <span class="onepage-logo__mark">ME</span>
+    <span class="onepage-logo__text">Molkom EL</span>
+  </a>
+
+  <!-- Dot navigation (3 sections) -->
   <nav class="dot-nav" id="dot-nav" aria-label="Sektionsnavigering">
     <button class="dot-nav__dot active" data-section="op-hero" aria-label="Start"></button>
     <button class="dot-nav__dot" data-section="op-services" aria-label="Tjänster"></button>
-    <button class="dot-nav__dot" data-section="op-trust" aria-label="Trygghet"></button>
-    <button class="dot-nav__dot" data-section="op-about" aria-label="Om oss"></button>
     <button class="dot-nav__dot" data-section="op-contact" aria-label="Kontakt"></button>
   </nav>
 
-  <div class="onepage-container">
-    <!-- Hero -->
+  <div class="onepage-container" id="onepage-container">
+    <!-- Section 1: Hero — full-bleed photo with centered dark overlay -->
     <section class="onepage-section" id="op-hero">
       <Hero
         eyebrow="Sedan 1925"
@@ -33,7 +57,7 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
       />
     </section>
 
-    <!-- Services (compact) -->
+    <!-- Section 2: Services + Trust bar combined -->
     <section class="onepage-section" id="op-services">
       <div class="section">
         <div class="container">
@@ -47,42 +71,61 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
               </div>
             ))}
           </div>
-          <p style="text-align: center; margin-top: var(--space-xl); color: var(--color-muted); font-size: var(--text-sm);">
-            Kontakta oss för mer information om våra tjänster.
-          </p>
+
+          <!-- Trust bar integrated below services -->
+          <div class="onepage-trust">
+            <div class="onepage-trust__list">
+              <span class="onepage-trust__chip onepage-trust__chip--featured">Sedan 1925</span>
+              <span class="onepage-trust__chip">Registrerad hos Elsäkerhetsverket</span>
+              <span class="onepage-trust__chip">ID06</span>
+              <span class="onepage-trust__chip">Rikstäckande</span>
+              <span class="onepage-trust__chip">Dokumentation</span>
+              <span class="onepage-trust__chip">Utbildad personal</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Trust -->
-    <section class="onepage-section" id="op-trust">
-      <TrustBar />
-    </section>
-
-    <!-- About (compact) -->
-    <section class="onepage-section" id="op-about">
+    <!-- Section 3: About + Contact combined -->
+    <section class="onepage-section onepage-section--last" id="op-contact">
       <div class="section">
-        <div class="container container--narrow" style="text-align: center;">
-          <span class="eyebrow">Om oss</span>
-          <h2 style="margin: var(--space-sm) 0 var(--space-md);">Erfarenhet sedan 1925</h2>
-          <p>Molkom EL har levererat elinstallationer i snart hundra år — från villainstallationer till elkraft upp till 145 kV. Vi arbetar rikstäckande med säkerhet och kvalitet i fokus.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact (simple) -->
-    <section class="onepage-section" id="op-contact">
-      <div class="section">
-        <div class="container" style="max-width: 600px;">
-          <h2 style="text-align: center; margin-bottom: var(--space-xl);">Kontakta oss</h2>
-          <ContactForm compact />
+        <div class="container">
+          <div class="onepage-final">
+            <!-- About column -->
+            <div class="onepage-final__about">
+              <span class="eyebrow">Om oss</span>
+              <h2 style="margin: var(--space-sm) 0 var(--space-md);">Erfarenhet sedan 1925</h2>
+              <p>Molkom EL har levererat elinstallationer i snart hundra år — från villainstallationer till elkraft upp till 145 kV. Vi arbetar rikstäckande med säkerhet och kvalitet i fokus.</p>
+              <div class="onepage-final__contact-info">
+                <p>
+                  <a href="tel:+46XXXXXXXXX">+46 XXX-XXX XX XX</a><br/>
+                  <a href="mailto:info@molkom-el.se">info@molkom-el.se</a>
+                </p>
+                <a href="/" class="btn btn--outline">Besök hela webbplatsen</a>
+              </div>
+            </div>
+            <!-- Contact form column -->
+            <div class="onepage-final__form">
+              <h2 style="margin-bottom: var(--space-lg);">Kontakta oss</h2>
+              <ContactForm compact />
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </div>
-</BaseLayout>
+
+  <CookieBanner />
+</body>
+</html>
 
 <style>
+  /* Standalone body — no header/footer, full scroll-snap */
+  .onepage-body {
+    overflow: hidden;
+  }
+
   .onepage-container {
     scroll-snap-type: y mandatory;
     overflow-y: auto;
@@ -102,13 +145,105 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
     width: 100%;
   }
 
+  /* Last section: subtle background to separate from services */
+  .onepage-section--last {
+    background: var(--color-surface);
+  }
+
+  /* Force hero to span full section width */
+  #op-hero :global(.hero) {
+    width: 100%;
+  }
+
+  /* Override Hero overlay for one-page: dark centered overlay instead of left-to-right white */
+  #op-hero :global(.hero__overlay) {
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 33, 55, 0.45) 0%,
+      rgba(15, 33, 55, 0.6) 50%,
+      rgba(15, 33, 55, 0.75) 100%
+    ) !important;
+  }
+
+  #op-hero :global(.hero__content) {
+    max-width: 800px !important;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #op-hero :global(.hero__title),
+  #op-hero :global(.hero__subtitle),
+  #op-hero :global(.hero__eyebrow) {
+    color: var(--color-white);
+  }
+
+  #op-hero :global(.hero__subtitle) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #op-hero :global(.hero__actions) {
+    justify-content: center;
+  }
+
+  #op-hero :global(.hero__scroll-indicator) {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Make outline button visible on dark hero */
+  #op-hero :global(.btn--outline) {
+    color: var(--color-white);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  #op-hero :global(.btn--outline:hover) {
+    border-color: var(--color-white);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Floating logo — white on hero */
+  .onepage-logo {
+    position: fixed;
+    top: 1.25rem;
+    left: 1.5rem;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--color-white);
+    transition: color 0.3s ease;
+  }
+
+  .onepage-logo.scrolled {
+    color: var(--color-ink);
+  }
+
+  .onepage-logo__mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--color-red);
+    color: var(--color-white);
+    font-weight: 700;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .onepage-logo__text {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+  }
+
   /* Dot nav */
   .dot-nav {
     position: fixed;
     right: 1.5rem;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 50;
+    z-index: 60;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -118,7 +253,7 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    border: 2px solid var(--color-muted);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     background: transparent;
     padding: 0;
     cursor: pointer;
@@ -129,6 +264,14 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
     background: var(--color-red);
     border-color: var(--color-red);
     transform: scale(1.3);
+  }
+
+  .dot-nav.scrolled .dot-nav__dot {
+    border-color: var(--color-muted);
+  }
+
+  .dot-nav.scrolled .dot-nav__dot.active {
+    border-color: var(--color-red);
   }
 
   /* Compact services */
@@ -143,23 +286,115 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
     padding: var(--space-lg);
     background: var(--color-surface);
     border-radius: 0.75rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .compact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
   }
 
   .compact-card__icon { font-size: 1.5rem; display: block; margin-bottom: var(--space-sm); }
   .compact-card__title { font-family: var(--font-body); font-size: var(--text-base); font-weight: 600; margin-bottom: var(--space-xs); }
   .compact-card__desc { font-size: var(--text-sm); color: var(--color-body); }
 
+  /* Inline trust bar */
+  .onepage-trust {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .onepage-trust__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    justify-content: center;
+  }
+
+  .onepage-trust__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-ink-light);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 2rem;
+    box-shadow: inset 0 1px 2px rgba(15, 33, 55, 0.04);
+    white-space: nowrap;
+  }
+
+  .onepage-trust__chip--featured {
+    background: var(--color-red-light);
+    color: var(--color-red);
+    border-color: transparent;
+    font-weight: 600;
+  }
+
+  /* Combined About + Contact final section */
+  .onepage-final {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3xl);
+    align-items: start;
+  }
+
+  .onepage-final__about {
+    padding-top: var(--space-md);
+  }
+
+  .onepage-final__about p {
+    color: var(--color-body);
+    line-height: 1.7;
+  }
+
+  .onepage-final__contact-info {
+    margin-top: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .onepage-final__contact-info a {
+    color: var(--color-ink-light);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .onepage-final__contact-info a:hover {
+    color: var(--color-red);
+  }
+
+  .onepage-final__form {
+    background: var(--color-white);
+    padding: var(--space-xl);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-sm);
+  }
+
   @media (max-width: 768px) {
     .dot-nav { right: 0.75rem; }
     .compact-services { grid-template-columns: 1fr 1fr; }
+    .onepage-logo__text { display: none; }
+    .onepage-final {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+    .onepage-section--last {
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
   }
 </style>
 
 <script>
   // Dot nav active tracking + click scrolling
-  const container = document.querySelector('.onepage-container');
   const sections = document.querySelectorAll('.onepage-section');
   const dots = document.querySelectorAll('.dot-nav__dot');
+  const logo = document.querySelector('.onepage-logo');
+  const dotNav = document.querySelector('.dot-nav');
 
   // Click to scroll
   dots.forEach((dot) => {
@@ -171,8 +406,9 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
     });
   });
 
-  // Track active section
-  if (container) {
+  // Track active section + update logo/dot colors based on scroll position
+  const scrollRoot = document.getElementById('onepage-container');
+  if (scrollRoot) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -180,10 +416,15 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
             dots.forEach((d) => d.classList.remove('active'));
             const activeDot = document.querySelector(`[data-section="${entry.target.id}"]`);
             activeDot?.classList.add('active');
+
+            // Toggle light/dark UI elements based on whether we're on the hero
+            const isHero = entry.target.id === 'op-hero';
+            logo?.classList.toggle('scrolled', !isHero);
+            dotNav?.classList.toggle('scrolled', !isHero);
           }
         });
       },
-      { root: container, threshold: 0.5 }
+      { root: scrollRoot, threshold: 0.5 }
     );
     sections.forEach((s) => observer.observe(s));
   }

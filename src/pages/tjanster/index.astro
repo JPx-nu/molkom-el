@@ -1,0 +1,79 @@
+---
+/**
+ * /tjanster — Services overview page.
+ *
+ * Lists all services from the content collection as cards, sorted by
+ * the `order` field. Shares the same grid layout as the homepage
+ * services section. Uses the dark hero variant (no background image).
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import CTABlock from '../../components/CTABlock.astro';
+import { getCollection } from 'astro:content';
+
+import barnImage from '../../assets/pics/2.jpg';
+import substationImage from '../../assets/pics/1.jpg';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+
+const serviceImages: Record<string, ImageMetadata> = {
+  '2.jpg': barnImage,
+  '1.jpg': substationImage,
+};
+---
+
+<BaseLayout
+  title="Tjänster"
+  description="Elinstallationer, elkraft, entreprenad, utbildningar och maskinuthyrning. Se alla tjänster från Molkom EL."
+>
+  <Hero
+    title="Våra tjänster"
+    subtitle="Från villainstallationer till elkraftsanläggningar — vi har kompetensen."
+    variant="narrow"
+    dark
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="services-grid">
+        {services.map((service) => (
+          <ServiceCard
+            title={service.data.shortTitle}
+            description={service.data.description}
+            href={`/tjanster/${service.id}`}
+            image={service.data.image ? serviceImages[service.data.image] : undefined}
+            icon={service.data.icon}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTABlock
+    title="Behöver ni hjälp?"
+    text="Kontakta oss för offert, rådgivning eller bokning."
+    primaryCTA={{ label: 'Kontakta oss', href: '/kontakt' }}
+    secondaryCTA={{ label: 'Ring oss', href: 'tel:+46XXXXXXXXX' }}
+  />
+</BaseLayout>
+
+<style>
+  .services-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xl);
+    justify-content: center;
+  }
+
+  .services-grid > :global(*) {
+    flex: 0 1 calc((100% - 2 * var(--space-xl)) / 3);
+    min-width: 280px;
+  }
+
+  @media (max-width: 768px) {
+    .services-grid {
+      flex-direction: column;
+    }
+  }
+</style>

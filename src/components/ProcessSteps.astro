@@ -1,4 +1,11 @@
 ---
+/**
+ * ProcessSteps — 4-step horizontal process diagram.
+ *
+ * Desktop: numbered circles connected by horizontal lines.
+ * Mobile: vertical layout with inline number + text rows.
+ * Numbers are displayed in 72px red-tinted circles.
+ */
 interface Step {
   number: string;
   title: string;
@@ -13,7 +20,7 @@ const steps: Step[] = [
 ];
 ---
 
-<section class="process section section--surface">
+<section class="process section">
   <div class="container">
     <h2 class="process__heading reveal">Så går det till</h2>
     <div class="process__grid">
@@ -48,19 +55,25 @@ const steps: Step[] = [
   }
 
   .process__number {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto var(--space-md);
+    background: var(--color-red-light);
+    border-radius: 50%;
     font-family: var(--font-display);
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
     color: var(--color-red);
-    margin-bottom: var(--space-md);
   }
 
   .process__line {
     position: absolute;
-    top: 1.8rem;
-    left: 60%;
-    width: calc(100% - 20%);
-    height: 1px;
+    top: 36px;
+    left: calc(50% + 36px);
+    width: calc(100% - 72px);
+    height: 2px;
     background: var(--color-border);
   }
 
@@ -100,6 +113,10 @@ const steps: Step[] = [
     .process__number {
       grid-row: 1 / -1;
       align-self: center;
+      width: 48px;
+      height: 48px;
+      font-size: var(--text-xl);
+      margin: 0;
     }
     .process__desc {
       max-width: none;

@@ -1,4 +1,17 @@
 ---
+/**
+ * Header — fixed-position site navigation with frosted glass scroll effect.
+ *
+ * Features:
+ *   - Desktop: horizontal nav with dropdown for Tjänster sub-services
+ *   - Mobile: hamburger → full-screen overlay menu
+ *   - Frosted glass background on scroll (backdrop-filter)
+ *   - Auto-detects dark hero pages and switches to light text
+ *
+ * Active link logic: "Tjänster" parent is only underlined when the current
+ * path matches one of its dropdown children — standalone service pages like
+ * Utbildningar and Maskinuthyrning are separate top-level nav items.
+ */
 interface NavItem {
   label: string;
   href: string;
@@ -22,7 +35,22 @@ const navItems: NavItem[] = [
   { label: 'Spontanansökan', href: '/spontanansokan' },
 ];
 
-const currentPath = Astro.url.pathname;
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+/**
+ * Determines if a nav item should show as active (underlined).
+ * Parent items with children: active only when path matches a child.
+ * Leaf items: active on exact or prefix match (except root '/').
+ */
+function isNavActive(item: NavItem): boolean {
+  const normPath = currentPath;
+  const normHref = item.href.replace(/\/$/, '') || '/';
+  if (normPath === normHref) return true;
+  if (item.children) {
+    return item.children.some((child) => normPath.startsWith(child.href.replace(/\/$/, '')));
+  }
+  return normPath.startsWith(normHref) && normHref !== '/';
+}
 ---
 
 <header class="header" id="site-header">
@@ -40,7 +68,7 @@ const currentPath = Astro.url.pathname;
           <li class={`header__nav-item ${item.children ? 'has-dropdown' : ''}`}>
             <a
               href={item.href}
-              class={`header__nav-link ${currentPath.startsWith(item.href) ? 'active' : ''}`}
+              class={`header__nav-link ${isNavActive(item) ? 'active' : ''}`}
             >
               {item.label}
               {item.children && (
@@ -121,8 +149,26 @@ const currentPath = Astro.url.pathname;
   }
 
   .header.scrolled {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px) saturate(1.5);
+    -webkit-backdrop-filter: blur(12px) saturate(1.5);
+    box-shadow: 0 1px 3px rgba(15, 33, 55, 0.08);
+  }
+
+  /* Light text when header is over a dark hero (before scrolling) */
+  .header.header--over-dark:not(.scrolled) .header__logo-text,
+  .header.header--over-dark:not(.scrolled) .header__nav-link,
+  .header.header--over-dark:not(.scrolled) .header__phone {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .header.header--over-dark:not(.scrolled) .header__nav-link:hover,
+  .header.header--over-dark:not(.scrolled) .header__nav-link.active {
+    color: var(--color-white);
+  }
+
+  .header.header--over-dark:not(.scrolled) .header__hamburger span {
     background: var(--color-white);
-    box-shadow: var(--shadow-md);
   }
 
   .header__inner {
@@ -377,8 +423,13 @@ const currentPath = Astro.url.pathname;
 </style>
 
 <script>
-  // Scroll detection for header background
+  // Detect dark hero and apply light header text
   const header = document.getElementById('site-header');
+  if (header && document.querySelector('.hero--dark')) {
+    header.classList.add('header--over-dark');
+  }
+
+  // Scroll detection for header background
   if (header) {
     const observer = new IntersectionObserver(
       ([entry]) => {

@@ -1,4 +1,11 @@
 ---
+/**
+ * CTABlock — full-width dark call-to-action band.
+ *
+ * Used before the footer on most pages. Features a navy gradient
+ * background with subtle radial red/white pattern overlay for depth.
+ * White primary button + ghost outline secondary button.
+ */
 interface Props {
   title: string;
   text?: string;
@@ -9,7 +16,7 @@ interface Props {
 const { title, text, primaryCTA, secondaryCTA } = Astro.props;
 ---
 
-<section class="cta-block section--dark">
+<section class="cta-block">
   <div class="container" style="text-align: center; padding: var(--space-4xl) 0;">
     <h2 class="cta-block__title">{title}</h2>
     {text && <p class="cta-block__text">{text}</p>}
@@ -25,9 +32,27 @@ const { title, text, primaryCTA, secondaryCTA } = Astro.props;
 </section>
 
 <style>
+  .cta-block {
+    background: linear-gradient(135deg, var(--color-ink) 0%, #152d47 50%, #0F2137 100%);
+    color: var(--color-white);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle geometric pattern overlay */
+  .cta-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(200, 16, 46, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
   .cta-block__title {
     color: var(--color-white);
     margin-bottom: var(--space-md);
+    position: relative;
   }
 
   .cta-block__text {
@@ -35,6 +60,7 @@ const { title, text, primaryCTA, secondaryCTA } = Astro.props;
     color: rgba(255, 255, 255, 0.7);
     max-width: 500px;
     margin: 0 auto var(--space-xl);
+    position: relative;
   }
 
   .cta-block__actions {
@@ -42,5 +68,6 @@ const { title, text, primaryCTA, secondaryCTA } = Astro.props;
     gap: var(--space-md);
     justify-content: center;
     flex-wrap: wrap;
+    position: relative;
   }
 </style>

@@ -1,4 +1,19 @@
 ---
+/**
+ * Hero — full-viewport or narrow banner used on every page.
+ *
+ * Variants:
+ *   full  — 100vh with background image, dual CTAs, scroll indicator (homepage)
+ *   narrow — compact sub-page banner (40vh)
+ *
+ * The `dark` flag activates a navy gradient background with light text,
+ * used for service sub-pages that lack a hero photo. When combined with
+ * an image, it applies a dark overlay instead of the default white-fade.
+ *
+ * Overlay strategy (full variant with image):
+ *   Layer 1: bottom-up dark gradient — darkens CTA area for contrast
+ *   Layer 2: left-to-right white fade — keeps left-aligned text readable
+ */
 import { Image } from 'astro:assets';
 
 interface Props {
@@ -8,7 +23,10 @@ interface Props {
   primaryCTA?: { label: string; href: string };
   secondaryCTA?: { label: string; href: string };
   image?: ImageMetadata;
+  /** 'full' = 100vh homepage hero, 'narrow' = compact sub-page banner */
   variant?: 'full' | 'narrow';
+  /** Navy gradient background with light text for pages without hero photos */
+  dark?: boolean;
 }
 
 const {
@@ -19,10 +37,11 @@ const {
   secondaryCTA,
   image,
   variant = 'full',
+  dark = false,
 } = Astro.props;
 ---
 
-<section class={`hero hero--${variant}`}>
+<section class={`hero hero--${variant}${dark ? ' hero--dark' : ''}`}>
   {image && (
     <div class="hero__bg">
       <Image
@@ -100,13 +119,20 @@ const {
   .hero__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.95) 0%,
-      rgba(255, 255, 255, 0.85) 30%,
-      rgba(255, 255, 255, 0.4) 55%,
-      rgba(255, 255, 255, 0) 75%
-    );
+    background:
+      linear-gradient(
+        to top,
+        rgba(15, 33, 55, 0.4) 0%,
+        rgba(15, 33, 55, 0.1) 30%,
+        transparent 50%
+      ),
+      linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.85) 30%,
+        rgba(255, 255, 255, 0.4) 55%,
+        rgba(255, 255, 255, 0) 75%
+      );
   }
 
   /* Content */
@@ -128,6 +154,7 @@ const {
     font-size: var(--text-4xl);
     margin-bottom: var(--space-md);
     animation: fadeUp 0.6s ease 0.1s both;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
   }
 
   .hero__subtitle {
@@ -142,11 +169,62 @@ const {
     color: var(--color-body);
   }
 
+  /* Dark variant for service sub-pages */
+  .hero--dark {
+    background: linear-gradient(135deg, var(--color-ink) 0%, #1a3554 100%);
+  }
+
+  .hero--dark .hero__title {
+    color: var(--color-white);
+    text-shadow: none;
+  }
+
+  .hero--dark .hero__subtitle {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .hero--dark .hero__eyebrow {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Dark overlay when image + dark are combined */
+  .hero--dark .hero__overlay {
+    background: linear-gradient(
+      135deg,
+      rgba(15, 33, 55, 0.85) 0%,
+      rgba(26, 53, 84, 0.75) 100%
+    );
+  }
+
+  .hero--dark::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--color-red), transparent);
+  }
+
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-md);
     animation: fadeUp 0.6s ease 0.3s both;
+  }
+
+  /* Glass outline button on full hero */
+  .hero--full .btn--outline {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: var(--color-white);
+  }
+  .hero--full .btn--outline:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: var(--color-white);
+    color: var(--color-white);
   }
 
   /* Scroll indicator */
@@ -184,12 +262,19 @@ const {
       min-height: 90vh;
     }
     .hero__overlay {
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.95) 0%,
-        rgba(255, 255, 255, 0.8) 50%,
-        rgba(255, 255, 255, 0.3) 100%
-      );
+      background:
+        linear-gradient(
+          to top,
+          rgba(15, 33, 55, 0.4) 0%,
+          rgba(15, 33, 55, 0.1) 30%,
+          transparent 50%
+        ),
+        linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.95) 0%,
+          rgba(255, 255, 255, 0.8) 50%,
+          rgba(255, 255, 255, 0.3) 100%
+        );
     }
     .hero__actions {
       flex-direction: column;

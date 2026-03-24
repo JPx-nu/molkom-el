@@ -1,4 +1,14 @@
 ---
+/**
+ * ServiceCard — clickable card with image or SVG icon fallback.
+ *
+ * When a service has a photo, it renders with a desaturated image that
+ * gains full color on hover. When no photo is available, it falls back
+ * to a navy gradient background with a white SVG icon derived from the
+ * emoji icon prop. This ensures visual consistency across all 5 cards.
+ *
+ * Hover effects: lift (-4px), red top-bar reveal, image color restore.
+ */
 import { Image } from 'astro:assets';
 
 interface Props {
@@ -6,10 +16,27 @@ interface Props {
   description: string;
   href: string;
   image?: ImageMetadata;
+  /** Emoji string mapped to SVG icon (e.g. '👷' → hardhat). Falls back to ⚡ */
   icon?: string;
 }
 
 const { title, description, href, image, icon } = Astro.props;
+
+/** Map emoji icon props to SVG path data (stroke-based, 24x24 viewBox) */
+const svgIconPaths: Record<string, string> = {
+  '👷': // Entreprenad — hardhat/construction
+    'M12 2C8.13 2 5 5.13 5 9v1H3v3h1v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1h1v-3h-2V9c0-3.87-3.13-7-7-7ZM8 9c0-2.21 1.79-4 4-4s4 1.79 4 4v1H8V9Zm-1 7v4m10-4v4M9 22h6',
+  '🎓': // Utbildningar — graduation cap
+    'M2 10l10-5 10 5-10 5-10-5Zm4 3v4c0 1.1 2.69 2 6 2s6-.9 6-2v-4M22 10v6',
+  '🏗': // Maskinuthyrning — crane
+    'M6 22V4m0 0L2 8m4-4 8-2v6l-8 2m0 0v12m8-12v12m-4-6h8m4-10v16M18 4l4 2',
+  '⚡': // Default — lightning bolt
+    'M13 2L3 14h9l-1 8 10-12h-9l1-8Z',
+  '🔌': // Elkraft — power plug
+    'M8 2v6m8-6v6m-12 0h16a1 1 0 0 1 1 1v2a5 5 0 0 1-4 4.9V18a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2.1A5 5 0 0 1 3 11V9a1 1 0 0 1 1-1Z',
+};
+
+const svgPath = svgIconPaths[icon || '⚡'] || svgIconPaths['⚡'];
 ---
 
 <a href={href} class="service-card reveal">
@@ -24,7 +51,9 @@ const { title, description, href, image, icon } = Astro.props;
       />
     ) : (
       <div class="service-card__icon-fallback">
-        <span class="service-card__icon">{icon || '⚡'}</span>
+        <svg class="service-card__svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d={svgPath} />
+        </svg>
       </div>
     )}
   </div>
@@ -95,11 +124,18 @@ const { title, description, href, image, icon } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--color-surface);
+    background: linear-gradient(135deg, var(--color-ink) 0%, #1a3554 100%);
   }
 
-  .service-card__icon {
-    font-size: 2.5rem;
+  .service-card__svg-icon {
+    width: 64px;
+    height: 64px;
+    color: rgba(255, 255, 255, 0.85);
+    transition: transform var(--transition-slow);
+  }
+
+  .service-card:hover .service-card__svg-icon {
+    transform: scale(1.1);
   }
 
   .service-card__body {

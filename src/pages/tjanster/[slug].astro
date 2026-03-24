@@ -1,4 +1,15 @@
 ---
+/**
+ * /tjanster/[slug] — Dynamic service detail page.
+ *
+ * Renders Markdown content from the services content collection.
+ * Conditionally shows:
+ *   - Capabilities grid (elkraft variant)
+ *   - Course cards (utbildningar variant)
+ *   - ROT-avdrag info panel (lågspänning variant)
+ *
+ * Uses the dark hero variant with navy gradient background.
+ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import ProcessSteps from '../../components/ProcessSteps.astro';
@@ -27,7 +38,7 @@ const { title, metaDescription, tags, variant, ctaLabel, ctaHref, secondaryCTA, 
   serviceDescription={metaDescription}
 >
   <!-- Hero (narrow) -->
-  <Hero title={title} subtitle={service.data.description} variant="narrow" />
+  <Hero title={title} subtitle={service.data.description} variant="narrow" dark />
 
   <!-- Body content -->
   <section class="section">

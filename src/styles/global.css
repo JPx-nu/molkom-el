@@ -1,5 +1,13 @@
 /* ============================================
    MOLKOM EL — Design Tokens & Base Styles
+   ============================================
+
+   Palette A: marine blue (#0F2137) + signal red (#C8102E) + white base.
+   Typography: DM Serif Display (headings) + DM Sans (body) — same superfamily.
+   Fluid type scale using clamp() for responsive sizing without breakpoints.
+   Spacing follows a consistent rem-based scale from 0.25rem to 8rem.
+
+   Global utility classes: .container, .section, .btn, .reveal, .eyebrow
    ============================================ */
 
 /* --- Fonts --- */

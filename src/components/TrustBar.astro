@@ -1,6 +1,14 @@
 ---
+/**
+ * TrustBar — horizontal strip of credential/trust chips.
+ *
+ * Displays company trust signals (certifications, heritage, coverage).
+ * "Sedan 1925" is featured with a red-tinted background.
+ * On mobile, chips become horizontally scrollable.
+ */
 interface TrustItem {
   label: string;
+  /** Featured items get a red accent background (e.g. "Sedan 1925") */
   featured?: boolean;
 }
 
@@ -16,6 +24,7 @@ const items: TrustItem[] = [
 
 <section class="trust-bar section">
   <div class="container">
+    <p class="trust-bar__label">Trygghet & kvalitet</p>
     <div class="trust-bar__list">
       {items.map((item) => (
         <div class={`trust-bar__chip reveal ${item.featured ? 'trust-bar__chip--featured' : ''}`}>
@@ -27,6 +36,21 @@ const items: TrustItem[] = [
 </section>
 
 <style>
+  .trust-bar {
+    padding: var(--space-2xl) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .trust-bar__label {
+    text-align: center;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-red);
+    margin-bottom: var(--space-md);
+  }
+
   .trust-bar__list {
     display: flex;
     flex-wrap: wrap;
@@ -46,6 +70,13 @@ const items: TrustItem[] = [
     border-radius: 2rem;
     box-shadow: inset 0 1px 2px rgba(15, 33, 55, 0.04);
     white-space: nowrap;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    cursor: default;
+  }
+
+  .trust-bar__chip:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(15, 33, 55, 0.08);
   }
 
   .trust-bar__chip--featured {

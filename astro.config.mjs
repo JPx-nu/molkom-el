@@ -3,7 +3,8 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://molkom-el.se', // placeholder — update before launch
+  site: 'https://jpx-nu.github.io',
+  base: '/molkom-el',
   output: 'static',
   integrations: [sitemap()],
   image: {

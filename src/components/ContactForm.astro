@@ -1,5 +1,14 @@
 ---
+/**
+ * ContactForm — simple contact form with floating labels and GDPR consent.
+ *
+ * Fields: Name, Contact (phone/email), Message, GDPR checkbox.
+ * Submit button is disabled until GDPR consent is checked.
+ * Posts to /api/contact endpoint with FormData.
+ * The `compact` prop reduces spacing for embedded use (e.g. one-page layout).
+ */
 interface Props {
+  /** Reduces spacing for embedded contexts like the one-page layout */
   compact?: boolean;
 }
 const { compact = false } = Astro.props;
@@ -101,7 +110,8 @@ const { compact = false } = Astro.props;
   }
 
   .form-submit:disabled {
-    opacity: 0.5;
+    background: var(--color-muted);
+    opacity: 0.7;
     cursor: not-allowed;
     transform: none;
   }
