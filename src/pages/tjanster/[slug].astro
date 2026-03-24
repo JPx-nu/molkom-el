@@ -16,6 +16,7 @@ import ProcessSteps from '../../components/ProcessSteps.astro';
 import CTABlock from '../../components/CTABlock.astro';
 import ROTPanel from '../../components/ROTPanel.astro';
 import { getCollection, render } from 'astro:content';
+import { url } from '../../utils/url';
 
 export async function getStaticPaths() {
   const services = await getCollection('services');
@@ -27,7 +28,9 @@ export async function getStaticPaths() {
 
 const { service } = Astro.props;
 const { Content } = await render(service);
-const { title, metaDescription, tags, variant, ctaLabel, ctaHref, secondaryCTA, capabilities, courses } = service.data;
+const { title, metaDescription, tags, variant, ctaLabel, ctaHref: rawCtaHref, secondaryCTA: rawSecondaryCTA, capabilities, courses } = service.data;
+const ctaHref = url(rawCtaHref);
+const secondaryCTA = rawSecondaryCTA ? { label: rawSecondaryCTA.label, href: url(rawSecondaryCTA.href) } : undefined;
 ---
 
 <BaseLayout

@@ -11,6 +11,7 @@ import Hero from '../../components/Hero.astro';
 import ServiceCard from '../../components/ServiceCard.astro';
 import CTABlock from '../../components/CTABlock.astro';
 import { getCollection } from 'astro:content';
+import { url } from '../../utils/url';
 
 import barnImage from '../../assets/pics/2.jpg';
 import substationImage from '../../assets/pics/1.jpg';
@@ -41,7 +42,7 @@ const serviceImages: Record<string, ImageMetadata> = {
           <ServiceCard
             title={service.data.shortTitle}
             description={service.data.description}
-            href={`/tjanster/${service.id}`}
+            href={url(`/tjanster/${service.id}`)}
             image={service.data.image ? serviceImages[service.data.image] : undefined}
             icon={service.data.icon}
           />
@@ -53,7 +54,7 @@ const serviceImages: Record<string, ImageMetadata> = {
   <CTABlock
     title="Behöver ni hjälp?"
     text="Kontakta oss för offert, rådgivning eller bokning."
-    primaryCTA={{ label: 'Kontakta oss', href: '/kontakt' }}
+    primaryCTA={{ label: 'Kontakta oss', href: url('/kontakt') }}
     secondaryCTA={{ label: 'Ring oss', href: 'tel:+46XXXXXXXXX' }}
   />
 </BaseLayout>

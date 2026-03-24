@@ -16,6 +16,7 @@ import heroImg from '../assets/pics/4.jpg';
 import img1 from '../assets/pics/1.jpg';
 import img2 from '../assets/pics/3.jpg';
 import img3 from '../assets/pics/20170503_160950618_iOS.jpg';
+import { url } from '../utils/url';
 ---
 
 <BaseLayout title="Om oss" description="Molkom EL — elinstallationer sedan 1925. Läs om vår historia, kompetens och värderingar.">
@@ -82,8 +83,8 @@ import img3 from '../assets/pics/20170503_160950618_iOS.jpg';
   <CTABlock
     title="Vill du jobba med oss?"
     text="Vi söker alltid duktiga elektriker och montörer."
-    primaryCTA={{ label: 'Kontakta oss', href: '/kontakt' }}
-    secondaryCTA={{ label: 'Spontanansökan', href: '/spontanansokan' }}
+    primaryCTA={{ label: 'Kontakta oss', href: url('/kontakt') }}
+    secondaryCTA={{ label: 'Spontanansökan', href: url('/spontanansokan') }}
   />
 </BaseLayout>
 

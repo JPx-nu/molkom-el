@@ -11,6 +11,7 @@ interface Props {
   /** Reduces spacing for embedded contexts like the one-page layout */
   compact?: boolean;
 }
+import { url } from '../utils/url';
 const { compact = false } = Astro.props;
 ---
 
@@ -29,7 +30,7 @@ const { compact = false } = Astro.props;
   </div>
   <label class="form-checkbox">
     <input type="checkbox" name="gdpr" required id="cf-gdpr" />
-    <span>Jag godkänner att mina uppgifter behandlas enligt <a href="/integritetspolicy" target="_blank">integritetspolicyn</a>.</span>
+    <span>Jag godkänner att mina uppgifter behandlas enligt <a href={url('/integritetspolicy')} target="_blank">integritetspolicyn</a>.</span>
   </label>
   <button type="submit" class="btn btn--primary form-submit" disabled>Skicka förfrågan</button>
   <div class="form-status" id="cf-status" aria-live="polite"></div>

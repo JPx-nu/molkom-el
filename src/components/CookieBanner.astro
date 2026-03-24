@@ -1,8 +1,12 @@
+---
+import { url } from '../utils/url';
+---
+
 <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookiemedgivande">
   <div class="cookie-banner__inner container">
     <p class="cookie-banner__text">
       Vi använder nödvändiga cookies för att webbplatsen ska fungera.
-      <a href="/integritetspolicy">Läs mer i vår integritetspolicy</a>.
+      <a href={url('/integritetspolicy')}>Läs mer i vår integritetspolicy</a>.
     </p>
     <div class="cookie-banner__actions">
       <button class="btn btn--primary cookie-banner__btn" data-consent="all">Acceptera</button>

@@ -1,3 +1,7 @@
+---
+import { url } from '../utils/url';
+---
+
 <form class="contact-form" id="b2b-form" novalidate>
   <div class="form-row">
     <div class="form-field">
@@ -52,7 +56,7 @@
   </div>
   <label class="form-checkbox">
     <input type="checkbox" name="gdpr" required id="b2b-gdpr" />
-    <span>Jag godkänner att mina uppgifter behandlas enligt <a href="/integritetspolicy" target="_blank">integritetspolicyn</a>.</span>
+    <span>Jag godkänner att mina uppgifter behandlas enligt <a href={url('/integritetspolicy')} target="_blank">integritetspolicyn</a>.</span>
   </label>
   <button type="submit" class="btn btn--primary form-submit" disabled>Skicka entreprenadförfrågan</button>
   <div class="form-status" id="b2b-status" aria-live="polite"></div>

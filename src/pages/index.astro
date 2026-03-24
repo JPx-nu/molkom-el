@@ -20,6 +20,7 @@ import CTABlock from '../components/CTABlock.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import { url } from '../utils/url';
 
 import heroImage from '../assets/pics/3.jpg';
 import barnImage from '../assets/pics/2.jpg';
@@ -44,7 +45,7 @@ const serviceImages: Record<string, ImageMetadata> = {
     eyebrow="Sedan 1925"
     title="Ett anrikt företag med framtiden i fokus"
     subtitle="Elinstallationer från 0,4 till 145 kV — Molkom, Karlstad och hela Sverige."
-    primaryCTA={{ label: 'Kontakta oss', href: '/kontakt' }}
+    primaryCTA={{ label: 'Kontakta oss', href: url('/kontakt') }}
     secondaryCTA={{ label: 'Våra tjänster', href: '#tjanster' }}
     image={heroImage}
     variant="full"
@@ -59,7 +60,7 @@ const serviceImages: Record<string, ImageMetadata> = {
           <ServiceCard
             title={service.data.shortTitle}
             description={service.data.description}
-            href={`/tjanster/${service.id}`}
+            href={url(`/tjanster/${service.id}`)}
             image={service.data.image ? serviceImages[service.data.image] : undefined}
             icon={service.data.icon}
           />
@@ -87,7 +88,7 @@ const serviceImages: Record<string, ImageMetadata> = {
             Vi tror på säkerhet, kvalitet och tydlig dokumentation i varje uppdrag —
             oavsett om det gäller en laddbox hemma eller en kraftstation.
           </p>
-          <a href="/om-oss" class="btn btn--outline" style="margin-top: var(--space-lg);">Läs mer om oss</a>
+          <a href={url('/om-oss')} class="btn btn--outline" style="margin-top: var(--space-lg);">Läs mer om oss</a>
         </div>
         <div class="about-preview__image reveal">
           <Image
@@ -139,7 +140,7 @@ const serviceImages: Record<string, ImageMetadata> = {
   <CTABlock
     title="Redo att komma igång?"
     text="Kontakta oss för offert, rådgivning eller bokning — vi återkommer snabbt."
-    primaryCTA={{ label: 'Kontakta oss', href: '/kontakt' }}
+    primaryCTA={{ label: 'Kontakta oss', href: url('/kontakt') }}
     secondaryCTA={{ label: 'Ring oss', href: 'tel:+46XXXXXXXXX' }}
   />
 </BaseLayout>

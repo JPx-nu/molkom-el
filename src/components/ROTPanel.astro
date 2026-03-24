@@ -1,4 +1,6 @@
 ---
+import { url } from '../utils/url';
+
 const items = [
   {
     q: 'Vad är ROT-avdrag?',
@@ -28,7 +30,7 @@ const items = [
           </details>
         ))}
       </div>
-      <a href="/kontakt" class="btn btn--outline" style="margin-top: var(--space-lg);">Vill du veta mer? Kontakta oss</a>
+      <a href={url('/kontakt')} class="btn btn--outline" style="margin-top: var(--space-lg);">Vill du veta mer? Kontakta oss</a>
     </div>
   </div>
 </section>

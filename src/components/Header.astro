@@ -12,6 +12,8 @@
  * path matches one of its dropdown children — standalone service pages like
  * Utbildningar and Maskinuthyrning are separate top-level nav items.
  */
+import { url } from '../utils/url';
+
 interface NavItem {
   label: string;
   href: string;
@@ -21,18 +23,18 @@ interface NavItem {
 const navItems: NavItem[] = [
   {
     label: 'Tjänster',
-    href: '/tjanster',
+    href: url('/tjanster'),
     children: [
-      { label: '0–0,4 kV', href: '/tjanster/lagspanning' },
-      { label: '10–145 kV', href: '/tjanster/elkraft' },
-      { label: 'Entreprenad & personal', href: '/tjanster/entreprenad' },
+      { label: '0–0,4 kV', href: url('/tjanster/lagspanning') },
+      { label: '10–145 kV', href: url('/tjanster/elkraft') },
+      { label: 'Entreprenad & personal', href: url('/tjanster/entreprenad') },
     ],
   },
-  { label: 'Utbildningar', href: '/tjanster/utbildningar' },
-  { label: 'Maskinuthyrning', href: '/tjanster/maskinuthyrning' },
-  { label: 'Om oss', href: '/om-oss' },
-  { label: 'Kontakt', href: '/kontakt' },
-  { label: 'Spontanansökan', href: '/spontanansokan' },
+  { label: 'Utbildningar', href: url('/tjanster/utbildningar') },
+  { label: 'Maskinuthyrning', href: url('/tjanster/maskinuthyrning') },
+  { label: 'Om oss', href: url('/om-oss') },
+  { label: 'Kontakt', href: url('/kontakt') },
+  { label: 'Spontanansökan', href: url('/spontanansokan') },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -56,7 +58,7 @@ function isNavActive(item: NavItem): boolean {
 <header class="header" id="site-header">
   <div class="header__inner container">
     <!-- Logo -->
-    <a href="/" class="header__logo" aria-label="Molkom EL – Startsida">
+    <a href={url('/')} class="header__logo" aria-label="Molkom EL – Startsida">
       <span class="header__logo-mark">ME</span>
       <span class="header__logo-text">Molkom EL</span>
     </a>
@@ -101,7 +103,7 @@ function isNavActive(item: NavItem): boolean {
         </svg>
         <span>Ring oss</span>
       </a>
-      <a href="/kontakt" class="btn btn--primary header__cta">Kontakta oss</a>
+      <a href={url('/kontakt')} class="btn btn--primary header__cta">Kontakta oss</a>
     </div>
 
     <!-- Mobile hamburger -->
@@ -131,7 +133,7 @@ function isNavActive(item: NavItem): boolean {
       </ul>
       <div class="header__mobile-actions">
         <a href="tel:+46XXXXXXXXX" class="btn btn--outline" style="width:100%">Ring oss</a>
-        <a href="/kontakt" class="btn btn--primary" style="width:100%">Kontakta oss</a>
+        <a href={url('/kontakt')} class="btn btn--primary" style="width:100%">Kontakta oss</a>
       </div>
     </nav>
   </div>

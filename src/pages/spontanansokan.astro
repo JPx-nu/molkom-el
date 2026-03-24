@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import { url } from '../utils/url';
 ---
 
 <BaseLayout title="Spontanansökan" description="Vill du jobba på Molkom EL? Skicka en spontanansökan med CV.">
@@ -44,7 +45,7 @@ import Hero from '../components/Hero.astro';
 
         <label class="form-checkbox">
           <input type="checkbox" name="gdpr" required id="apply-gdpr" />
-          <span>Jag godkänner att mina uppgifter behandlas enligt <a href="/integritetspolicy" target="_blank">integritetspolicyn</a>.</span>
+          <span>Jag godkänner att mina uppgifter behandlas enligt <a href={url('/integritetspolicy')} target="_blank">integritetspolicyn</a>.</span>
         </label>
         <button type="submit" class="btn btn--primary form-submit" disabled>Skicka ansökan</button>
         <div class="form-status" id="apply-status" aria-live="polite"></div>

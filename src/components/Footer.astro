@@ -1,13 +1,15 @@
 ---
+import { url } from '../utils/url';
+
 const currentYear = new Date().getFullYear();
 
 const quickLinks = [
-  { label: 'Tjänster', href: '/tjanster/lagspanning' },
-  { label: 'Utbildningar', href: '/tjanster/utbildningar' },
-  { label: 'Maskinuthyrning', href: '/tjanster/maskinuthyrning' },
-  { label: 'Om oss', href: '/om-oss' },
-  { label: 'Kontakt', href: '/kontakt' },
-  { label: 'Spontanansökan', href: '/spontanansokan' },
+  { label: 'Tjänster', href: url('/tjanster/lagspanning') },
+  { label: 'Utbildningar', href: url('/tjanster/utbildningar') },
+  { label: 'Maskinuthyrning', href: url('/tjanster/maskinuthyrning') },
+  { label: 'Om oss', href: url('/om-oss') },
+  { label: 'Kontakt', href: url('/kontakt') },
+  { label: 'Spontanansökan', href: url('/spontanansokan') },
 ];
 
 const trustBadges = [
@@ -67,7 +69,7 @@ const trustBadges = [
     <!-- Bottom bar -->
     <div class="footer__bottom">
       <span>© {currentYear} Molkom EL. Alla rättigheter förbehållna.</span>
-      <a href="/integritetspolicy">Integritetspolicy</a>
+      <a href={url('/integritetspolicy')}>Integritetspolicy</a>
     </div>
   </div>
 </footer>
