@@ -121,18 +121,31 @@ const {
     inset: 0;
     background:
       linear-gradient(
-        to top,
-        rgba(15, 33, 55, 0.4) 0%,
-        rgba(15, 33, 55, 0.1) 30%,
-        transparent 50%
+        to right,
+        rgba(15, 33, 55, 0.88) 0%,
+        rgba(15, 33, 55, 0.65) 40%,
+        rgba(15, 33, 55, 0.2) 70%,
+        transparent 100%
       ),
       linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0.95) 0%,
-        rgba(255, 255, 255, 0.85) 30%,
-        rgba(255, 255, 255, 0.4) 55%,
-        rgba(255, 255, 255, 0) 75%
+        to top,
+        rgba(15, 33, 55, 0.5) 0%,
+        transparent 45%
       );
+  }
+
+  /* White text when dark scrim is active (image hero) */
+  .hero--full:has(.hero__overlay) .hero__eyebrow {
+    color: var(--color-red);
+  }
+
+  .hero--full:has(.hero__overlay) .hero__title {
+    color: var(--color-white);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero--full:has(.hero__overlay) .hero__subtitle {
+    color: rgba(255, 255, 255, 0.85);
   }
 
   /* Content */
@@ -264,16 +277,10 @@ const {
     .hero__overlay {
       background:
         linear-gradient(
-          to top,
-          rgba(15, 33, 55, 0.4) 0%,
-          rgba(15, 33, 55, 0.1) 30%,
-          transparent 50%
-        ),
-        linear-gradient(
           to bottom,
-          rgba(255, 255, 255, 0.95) 0%,
-          rgba(255, 255, 255, 0.8) 50%,
-          rgba(255, 255, 255, 0.3) 100%
+          rgba(15, 33, 55, 0.85) 0%,
+          rgba(15, 33, 55, 0.6) 50%,
+          rgba(15, 33, 55, 0.35) 100%
         );
     }
     .hero__actions {
