@@ -192,6 +192,8 @@ const secondaryCTA = rawSecondaryCTA ? { label: rawSecondaryCTA.label, href: url
     border: 1px solid var(--color-border);
     border-radius: 0.75rem;
     padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
   }
 
   .course-card__name {
@@ -199,6 +201,7 @@ const secondaryCTA = rawSecondaryCTA ? { label: rawSecondaryCTA.label, href: url
     font-size: var(--text-lg);
     font-weight: 600;
     margin-bottom: var(--space-sm);
+    min-height: calc(var(--text-lg) * 1.2 * 2);
   }
 
   .course-card__meta {
@@ -207,6 +210,7 @@ const secondaryCTA = rawSecondaryCTA ? { label: rawSecondaryCTA.label, href: url
     gap: 0.2rem;
     font-size: var(--text-sm);
     color: var(--color-body);
+    flex: 1;
   }
 
   @media (max-width: 768px) {

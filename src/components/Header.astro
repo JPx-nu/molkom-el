@@ -32,8 +32,8 @@ const navItems: NavItem[] = [
   },
   { label: 'Utbildningar', href: url('/tjanster/utbildningar') },
   { label: 'Maskinuthyrning', href: url('/tjanster/maskinuthyrning') },
-  { label: 'Om oss', href: url('/om-oss') },
   { label: 'Spontanansökan', href: url('/spontanansokan') },
+  { label: 'Om oss', href: url('/om-oss') },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -426,7 +426,7 @@ function isNavActive(item: NavItem): boolean {
 <script>
   // Detect dark hero and apply light header text
   const header = document.getElementById('site-header');
-  if (header && document.querySelector('.hero--dark')) {
+  if (header && (document.querySelector('.hero--dark') || document.querySelector('.hero__overlay'))) {
     header.classList.add('header--over-dark');
   }
 

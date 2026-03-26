@@ -112,3 +112,12 @@ The primary document is [web-page.spec.md](web-page.spec.md), a comprehensive Sw
 - **Dark hero auto-detection**: Header script checks for `.hero--dark` on page load and toggles `header--over-dark` class for light nav text
 - **Service card image mapping**: image filenames from content collection are mapped to imported Astro image assets via a `Record<string, ImageMetadata>` lookup
 - **One-page variant**: `one-page.astro` is a standalone page with scroll-snap, dot navigation, and its own overlay styles (no shared header/footer)
+
+## Change Principles
+
+- Prefer the smallest possible change that solves the task cleanly.
+- Reuse existing components, utilities, patterns, and content before introducing new code.
+- Consolidate duplicated logic into existing shared code when it reduces repetition without expanding scope.
+- Avoid whole-file rewrites when a targeted patch is sufficient.
+- Keep diffs focused: do not mix unrelated refactors, formatting churn, or opportunistic cleanup into task-specific changes.
+- Preserve established structure, naming, and styling patterns unless the task explicitly calls for a broader redesign.
